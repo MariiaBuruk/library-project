@@ -1,6 +1,5 @@
 package ru.itgirl.libraryproject.model;
 
-import ch.qos.logback.classic.model.LoggerModel;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
