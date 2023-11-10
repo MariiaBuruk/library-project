@@ -1,29 +1,27 @@
-package ru.itgirl.libraryproject.model;
+package ru.itgirl.libraryproject.dto;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import ru.itgirl.libraryproject.model.Author;
+import ru.itgirl.libraryproject.model.Genre;
 
 import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 @Builder
-@Getter
-@Entity
-public class Book {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class BookUpdateDto {
     private Long id;
-    @Setter
-    @Column(nullable = false)
     private String name;
 
-    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "genre_id")
     private Genre genre;
 
-    @Setter
     @ManyToMany
     @JoinTable(
             name = "author_book",
