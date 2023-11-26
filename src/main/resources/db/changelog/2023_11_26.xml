@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+    <changeSet id="init db" author="author name">
+        <sql>
+            Create table if not exists users (
+            id bigint,
+            username varchar NOT NULL,
+            email varchar NOT NULL,
+            password varchar NOT NULL
+            );
+
+            Create table if not exists roles (
+            id bigint,
+            name varchar NOT NULL
+            );
+
+            Create table if not exists users_roles (
+            user_id bigint,
+            role_id bigint
+            );
+
+            insert into users (id, username, email, password) values
+            (1, 'dan', 'dan@gmail.com','$2a$10$RLQPdYPnuzHdu6xbdWezrupM2Fr7F0KrXoCMre4NL51QFXwuIVIS.'),
+            (2,'admin', 'admin@gmail.com','$2a$10$41OD2NeF7ie7wAfRJx8R3.vZ4762Rsg7FRAFWh6j1kXSeIO7t.KFq');
+
+            insert into roles values
+            (1,'ROLE_ADMIN'),
+            (2,'ROLE_USER');
+
+            insert into users_roles values
+            (2,1),
+            (1,2);
+
+        </sql>
+    </changeSet>
+</databaseChangeLog>
