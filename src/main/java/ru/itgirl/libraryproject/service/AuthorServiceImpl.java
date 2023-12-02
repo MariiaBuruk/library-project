@@ -5,6 +5,7 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import ru.itgirl.libraryproject.dto.AuthorCreateDto;
@@ -15,17 +16,30 @@ import ru.itgirl.libraryproject.model.Author;
 import ru.itgirl.libraryproject.repository.AuthorRepository;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AuthorServiceImpl implements AuthorService {
 
     private final AuthorRepository authorRepository;
     @Override
     public AuthorDto getAuthorById(Long id) {
-        Author author = authorRepository.findById(id).orElseThrow();
-        return convertToDto(author);
+        log.info("Попробуйте другой id {}", id);
+        Optional<Author> author = authorRepository.findById(id);
+        if (author.isPresent()) {
+            AuthorDto authorDto = convertEntityToDto(author.get());
+            log.info("Author: {}", authorDto.toString());
+            return authorDto;
+        }
+        else {
+            log.error("Автор с id {} не найден", id);
+            throw new NoSuchElementException("No value present");
+        }
+
     }
 
     private AuthorDto convertToDto(Author author) {
@@ -45,19 +59,28 @@ public class AuthorServiceImpl implements AuthorService {
                 .build();
     }
 
-    @Override
+    @Override //V1
     public AuthorDto getByNameV1(String name) {
-        Author author = authorRepository.findAuthorByName(name).orElseThrow();
-        return convertEntityToDto(author);
+        log.info("Попробуйте другое имя {}", name);
+        Optional<Author> author = authorRepository.findAuthorByName(name);
+        if(author.isPresent()){
+            AuthorDto authorDto = convertEntityToDto(author.get());
+            log.info("Автор {},", authorDto.toString());
+            return authorDto;
+        }
+        else {
+            log.error("Автор {}, не найден", name);
+            throw new NoSuchElementException("No value present");
+        }
     }
 
-    @Override
-    public AuthorDto getByNameV2(String name) {
+    @Override //V2
+    public AuthorDto getByNameSQL(String name) {
         Author author = authorRepository.findAuthorByNameBySql(name).orElseThrow();
         return convertEntityToDto(author);
     }
 
-    @Override
+    @Override //V3
     public AuthorDto getByNameV3(String name){
         Specification<Author> specification = Specification.where(new Specification<Author>() {
             @Override

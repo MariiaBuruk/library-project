@@ -28,7 +28,8 @@ public class SecurityConfig {
     }
     @Bean
     SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        HttpBasicConfigurer<HttpSecurity> httpSecurityHttpBasicConfigurer = httpSecurity.authorizeHttpRequests((authorize) ->
+        HttpBasicConfigurer<HttpSecurity> httpSecurityHttpBasicConfigurer = httpSecurity.csrf().disable().
+                authorizeHttpRequests((authorize) ->
                 authorize.requestMatchers("/book").hasRole("USER")
                         .requestMatchers("/book/v2").hasRole("ADMIN")
                         .requestMatchers("/books").hasRole("ADMIN")
