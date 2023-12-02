@@ -32,7 +32,7 @@ public class AuthorServiceImpl implements AuthorService {
         Optional<Author> author = authorRepository.findById(id);
         if (author.isPresent()) {
             AuthorDto authorDto = convertEntityToDto(author.get());
-            log.info("Author: {}", authorDto.toString());
+            log.info("Автор: {}", authorDto.toString());
             return authorDto;
         }
         else {
@@ -76,12 +76,22 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override //V2
     public AuthorDto getByNameSQL(String name) {
-        Author author = authorRepository.findAuthorByNameBySql(name).orElseThrow();
-        return convertEntityToDto(author);
+        log.info("Попробуйте другое имя {}", name);
+        Optional<Author> author = authorRepository.findAuthorByName(name);
+        if(author.isPresent()){
+            AuthorDto authorDto = convertEntityToDto(author.get());
+            log.info("Автор {},", authorDto.toString());
+            return authorDto;
+        }
+        else {
+            log.error("Автор {}, не найден", name);
+            throw new NoSuchElementException("No value present");
+        }
     }
 
     @Override //V3
     public AuthorDto getByNameV3(String name){
+        log.info("Попробуйте другое имя {}", name);
         Specification<Author> specification = Specification.where(new Specification<Author>() {
             @Override
             public Predicate toPredicate(Root<Author> root,
@@ -90,12 +100,21 @@ public class AuthorServiceImpl implements AuthorService {
                 return cb.equal(root.get("name"), name);
             }
         });
-        Author author = authorRepository.findOne(specification).orElseThrow();
-        return convertEntityToDto(author);
+        Optional<Author> author = authorRepository.findOne(specification);
+        if(author.isPresent()){
+            AuthorDto authorDto = convertEntityToDto(author.get());
+            log.info("Автор {},", authorDto.toString());
+            return authorDto;
+        }
+        else {
+            log.error("Автор {}, не найден", name);
+            throw new NoSuchElementException("No value present");
+        }
     }
 
     @Override
     public AuthorDto createAuthor(AuthorCreateDto authorCreateDto) {
+        log.info("Был создан автор {}", authorCreateDto);
         Author author = authorRepository.save(convertDtoToEntity(authorCreateDto));
         AuthorDto authorDto = convertEntityToDto(author);
         return authorDto;
@@ -103,6 +122,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public AuthorDto updateAuthor(AuthorUpdateDto authorUpdateDto) {
+        log.info("Был изменен автор {}", authorUpdateDto);
         Author author = authorRepository.findById(authorUpdateDto.getId()).orElseThrow();
         author.setName(authorUpdateDto.getName());
         author.setSurname(authorUpdateDto.getSurname());
@@ -119,6 +139,7 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public List<AuthorDto> getAllAuthors() {
         List<Author> authors = authorRepository.findAll();
+        log.info("Был вызван список Авторов");
         return authors.stream().map(this::convertEntityToDto).collect(Collectors.toList());
     }
 

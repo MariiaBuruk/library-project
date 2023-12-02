@@ -7,11 +7,10 @@ import ru.itgirl.libraryproject.dto.BookUpdateDto;
 import java.util.List;
 
 public interface BookService {
-    BookDto getByNameV1(String name);
+    BookDto getByNameV1(String name); //V1
+    BookDto getByNameBySQL(String name); //V2
+    BookDto getByNameV3(String name); //V3
 
-    BookDto getByNameV2(String name);
-
-    BookDto getByNameV3(String name);
     BookDto createBook(BookCreateDto bookCreateDto);
     BookDto updateBook(BookUpdateDto bookUpdateDto);
     void deleteBook(Long id);

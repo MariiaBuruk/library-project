@@ -16,6 +16,8 @@ import ru.itgirl.libraryproject.model.Book;
 import ru.itgirl.libraryproject.repository.BookRepository;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,20 +25,40 @@ import java.util.stream.Collectors;
 @Slf4j
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
+
     @Override
     public BookDto getByNameV1(String name) {
-        Book book = bookRepository.findBookByName(name).orElseThrow();
-        return convertEntityToDto(book);
+        log.info("Попробуйте другое имя {}", name);
+        Optional<Book> book = bookRepository.findBookByName(name);
+        if (book.isPresent()){
+            BookDto bookDto = convertEntityToDto(book.get());
+            log.info("Книга {}", name);
+            return bookDto;
+        }
+        else {
+            log.error("Книга {}, не найдена", name);
+            throw new NoSuchElementException("No value present");
+        }
     }
 
     @Override
-    public BookDto getByNameV2(String name) {
-        Book book = bookRepository.findBookByNameBySql(name).orElseThrow();
-        return convertEntityToDto(book);
+    public BookDto getByNameBySQL(String name) {
+        log.info("Попробуйте другое имя {}", name);
+        Optional<Book> book = bookRepository.findBookByNameBySql(name);
+        if (book.isPresent()){
+            BookDto bookDto = convertEntityToDto(book.get());
+            log.info("Книга {}", name);
+            return bookDto;
+        }
+        else {
+            log.error("Книга {}, не найдена", name);
+            throw new NoSuchElementException("No value present");
+        }
     }
 
     @Override
     public BookDto getByNameV3(String name){
+        log.info("Попробуйте другое имя {}", name);
         Specification<Book> specification = Specification.where(new Specification<Book>() {
             @Override
             public Predicate toPredicate(Root<Book> root,
@@ -45,12 +67,22 @@ public class BookServiceImpl implements BookService {
                 return cb.equal(root.get("name"), name);
             }
         });
-        Book book = bookRepository.findOne(specification).orElseThrow();
-        return convertEntityToDto(book);
+
+        Optional<Book> book = bookRepository.findOne(specification);
+        if (book.isPresent()){
+            BookDto bookDto = convertEntityToDto(book.get());
+            log.info("Книга {}", name);
+            return bookDto;
+        }
+        else {
+            log.error("Книга {}, не найдена", name);
+            throw new NoSuchElementException("No value present");
+        }
     }
 
     @Override
     public BookDto createBook(BookCreateDto bookCreateDto) {
+        log.info("Была создана книга {}", bookCreateDto);
         Book book = bookRepository.save(convertToDtoEntity(bookCreateDto));
         BookDto bookDto = convertEntityToDto(book);
         return bookDto;
@@ -58,6 +90,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto updateBook(BookUpdateDto bookUpdateDto) {
+        log.info("Была изменена книга {}", bookUpdateDto);
         Book book = bookRepository.findById(bookUpdateDto.getId()).orElseThrow();
         book.setName(bookUpdateDto.getName());
         book.setGenre(bookUpdateDto.getGenre());
@@ -76,6 +109,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<BookDto> getAllBooks() {
         List<Book> books = bookRepository.findAll();
+        log.info("Был вызван список Книг");
         return books.stream().map(this::convertEntityToDto).collect(Collectors.toList());
     }
 

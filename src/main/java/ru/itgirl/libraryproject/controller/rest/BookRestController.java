@@ -15,16 +15,16 @@ import ru.itgirl.libraryproject.service.BookService;
 public class BookRestController {
     private final BookService bookService;
 
-    //Придумать названия для трех внизу
-    @GetMapping("/book")
+    //Придумать названия для двух внизу
+    @GetMapping("/book") //V1
     BookDto getBookByName(@RequestParam("name") String name){
         return bookService.getByNameV1(name);
     }
-    @GetMapping("/book/v2")
-    BookDto getBookByNameV2(@RequestParam("name") String name) {
-        return bookService.getByNameV2(name);
+    @GetMapping("/book/sql") //V2
+    BookDto getBookByNameBySQL(@RequestParam("name") String name) {
+        return bookService.getByNameBySQL(name);
     }
-    @GetMapping("/book/v3")
+    @GetMapping("/book/v3") //V3
     BookDto getBookByNameV3(@RequestParam("name") String name) {
         return bookService.getByNameV3(name);
     }
