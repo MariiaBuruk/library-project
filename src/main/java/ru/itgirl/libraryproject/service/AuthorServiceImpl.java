@@ -28,7 +28,7 @@ public class AuthorServiceImpl implements AuthorService {
     private final AuthorRepository authorRepository;
     @Override
     public AuthorDto getAuthorById(Long id) {
-        log.info("Попробуйте другой id {}", id);
+        log.info("Вызван автор с id {}", id);
         Optional<Author> author = authorRepository.findById(id);
         if (author.isPresent()) {
             AuthorDto authorDto = convertEntityToDto(author.get());
@@ -39,7 +39,6 @@ public class AuthorServiceImpl implements AuthorService {
             log.error("Автор с id {} не найден", id);
             throw new NoSuchElementException("No value present");
         }
-
     }
 
     private AuthorDto convertToDto(Author author) {
