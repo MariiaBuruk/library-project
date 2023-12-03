@@ -60,7 +60,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override //V1
     public AuthorDto getByNameV1(String name) {
-        log.info("Попробуйте другое имя {}", name);
+        log.info("Вызван автор с именем {}", name);
         Optional<Author> author = authorRepository.findAuthorByName(name);
         if(author.isPresent()){
             AuthorDto authorDto = convertEntityToDto(author.get());
@@ -75,7 +75,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override //V2
     public AuthorDto getByNameSQL(String name) {
-        log.info("Попробуйте другое имя {}", name);
+        log.info("Вызван автор с именем {}", name);
         Optional<Author> author = authorRepository.findAuthorByName(name);
         if(author.isPresent()){
             AuthorDto authorDto = convertEntityToDto(author.get());
@@ -90,7 +90,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override //V3
     public AuthorDto getByNameV3(String name){
-        log.info("Попробуйте другое имя {}", name);
+        log.info("Вызван автор с именем {}", name);
         Specification<Author> specification = Specification.where(new Specification<Author>() {
             @Override
             public Predicate toPredicate(Root<Author> root,

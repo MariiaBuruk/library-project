@@ -28,7 +28,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto getByNameV1(String name) {
-        log.info("Попробуйте другое имя {}", name);
+        log.info("Была вызвана книга {}", name);
         Optional<Book> book = bookRepository.findBookByName(name);
         if (book.isPresent()){
             BookDto bookDto = convertEntityToDto(book.get());
@@ -43,7 +43,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto getByNameBySQL(String name) {
-        log.info("Попробуйте другое имя {}", name);
+        log.info("Была вызвана книга  {}", name);
         Optional<Book> book = bookRepository.findBookByNameBySql(name);
         if (book.isPresent()){
             BookDto bookDto = convertEntityToDto(book.get());
@@ -58,7 +58,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto getByNameV3(String name){
-        log.info("Попробуйте другое имя {}", name);
+        log.info("Была вызвана книга  {}", name);
         Specification<Book> specification = Specification.where(new Specification<Book>() {
             @Override
             public Predicate toPredicate(Root<Book> root,
