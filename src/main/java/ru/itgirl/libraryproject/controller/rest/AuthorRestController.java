@@ -22,16 +22,15 @@ public class AuthorRestController {
     }
 
 
-    // придумать названия V1 и V3 внизу:
     @GetMapping("/author") //V1
     AuthorDto getAuthorByName(@RequestParam("name") String name){
         return authorService.getByNameV1(name);
     }
     @GetMapping("/author/sql") //V2
     AuthorDto getAuthorByNameSQL(@RequestParam("name") String name) {return authorService.getByNameSQL(name);}
-    @GetMapping("/author/v3") //V3
-    AuthorDto getAuthorByNameV3(@RequestParam("name") String name) {
-        return authorService.getByNameV3(name);
+    @GetMapping("/author/criteria") //V3
+    AuthorDto getAuthorByCriteria(@RequestParam("name") String name) {
+        return authorService.getByCriteria(name);
     }
 
 

@@ -57,7 +57,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookDto getByNameV3(String name){
+    public BookDto getByNameCriteria(String name){
         log.info("Была вызвана книга  {}", name);
         Specification<Book> specification = Specification.where(new Specification<Book>() {
             @Override

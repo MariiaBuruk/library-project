@@ -40,7 +40,6 @@ public class AuthorServiceImpl implements AuthorService {
             throw new NoSuchElementException("No value present");
         }
     }
-
     private AuthorDto convertToDto(Author author) {
         List<BookDto> bookDtoList = author.getBooks()
                 .stream()
@@ -57,7 +56,6 @@ public class AuthorServiceImpl implements AuthorService {
                 .surname(author.getSurname())
                 .build();
     }
-
     @Override //V1
     public AuthorDto getByNameV1(String name) {
         log.info("Вызван автор с именем {}", name);
@@ -89,7 +87,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override //V3
-    public AuthorDto getByNameV3(String name){
+    public AuthorDto getByCriteria(String name){
         log.info("Вызван автор с именем {}", name);
         Specification<Author> specification = Specification.where(new Specification<Author>() {
             @Override

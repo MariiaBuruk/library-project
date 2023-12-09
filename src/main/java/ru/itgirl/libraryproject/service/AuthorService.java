@@ -11,7 +11,7 @@ public interface AuthorService {
 
     AuthorDto getByNameV1(String name); //V1
     AuthorDto getByNameSQL(String name); //V2
-    AuthorDto getByNameV3(String name); //V3
+    AuthorDto getByCriteria(String name); //V3
 
     AuthorDto createAuthor(AuthorCreateDto authorCreateDto);
     AuthorDto updateAuthor(AuthorUpdateDto authorUpdateDto);

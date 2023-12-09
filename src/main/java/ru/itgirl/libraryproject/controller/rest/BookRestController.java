@@ -15,7 +15,6 @@ import ru.itgirl.libraryproject.service.BookService;
 public class BookRestController {
     private final BookService bookService;
 
-    //Придумать названия для двух внизу
     @GetMapping("/book") //V1
     BookDto getBookByName(@RequestParam("name") String name){
         return bookService.getByNameV1(name);
@@ -24,9 +23,9 @@ public class BookRestController {
     BookDto getBookByNameBySQL(@RequestParam("name") String name) {
         return bookService.getByNameBySQL(name);
     }
-    @GetMapping("/book/v3") //V3
-    BookDto getBookByNameV3(@RequestParam("name") String name) {
-        return bookService.getByNameV3(name);
+    @GetMapping("/book/criteria") //V3
+    BookDto getBookByNameCriteria(@RequestParam("name") String name) {
+        return bookService.getByNameCriteria(name);
     }
 
 
