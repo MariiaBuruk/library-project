@@ -129,8 +129,9 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public void deleteAuthor(Long id) {
+    public String deleteAuthor(Long id) {
         authorRepository.deleteById(id);
+        return "Автор удален";
     }
 
     @Override
